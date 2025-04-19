@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Athletic - Football News, Live Scores, Results & Transfers</title>
+    <style>
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        :root {
+            --primary-color: #1e1e1e;
+            --secondary-color: #f7f7f7;
+            --accent-color: #fd0;
+            --text-color: #333;
+            --border-color: #e0e0e0;
+            --link-hover: #555;
+            --dark-bg: #121212;
+            --dark-text: #e0e0e0;
+            --dark-border: #444;
+        }
+
+        body {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        body.dark-mode header {
+            background-color: black;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: bold;
+            font-size: 24px;
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 30px;
+        }
+
+        .nav-main {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+        }
+
+        .nav-list {
+            display: flex;
+            list-style: none;
+            gap: 15px;
+            margin-right: auto;
+        }
+
+        .nav-list li a {
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 5px 0;
+        }
+
+        .nav-list li a:hover {
+            color: var(--accent-color);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .search-icon, .user-actions a {
+            color: white;
+            font-size: 14px;
+        }
+
+        .subscribe-btn {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            padding: 5px 15px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .main-article {
+            flex: 1 1 100%;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        body.dark-mode .main-article,
+        body.dark-mode .article-section,
+        body.dark-mode .article-card {
+            border-color: var(--dark-border);
+        }
+
+        .main-image {
+            width: 100%;
+            height: auto;
+            margin-bottom: 15px;
+        }
+
+        .main-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .main-excerpt {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        body.dark-mode .main-excerpt,
+        body.dark-mode .article-meta,
+        body.dark-mode .article-card .excerpt {
+            color: #aaa;
+        }
+
+        .article-meta {
+            font-size: 12px;
+            color: #888;
+            display: flex;
+            align-items: center;
+        }
+
+        .author-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        /* Section Styles */
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        body.dark-mode .section-title {
+            border-color: var(--accent-color);
+        }
+
+        .article-section {
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .article-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .article-card {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+        .article-card img {
+            width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+            object-fit: cover;
+        }
+
+        .article-card h3 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .article-card .excerpt {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .two-col-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .two-col-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Spotlight Section */
+        .spotlight {
+            margin-bottom: 30px;
+        }
+
+        .spotlight-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .spotlight-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .spotlight-card img {
+            width: 100%;
+            transition: transform 0.3s;
+        }
+
+        .spotlight-card:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Around Premier League */
+        .premier-league-section {
+            margin-bottom: 30px;
+        }
+
+        /* Transfer Targets */
+        .transfer-targets {
+            margin-bottom: 30px;
+        }
+
+        /* Most Popular */
+        .most-popular {
+            margin-bottom: 30px;
+        }
+
+        .popular-list {
+            list-style: none;
+        }
+
+        .popular-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+        }
+
+        body.dark-mode .popular-list li {
+            border-color: var(--dark-border);
+        }
+
+        .popular-list .number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #aaa;
+            margin-right: 15px;
+            min-width: 30px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 40px 0;
+            margin-top: 40px;
+        }
+
+        body.dark-mode footer {
+            background-color: #000;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-column h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 8px;
+        }
+
+        .footer-links a {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .app-download {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .app-download img {
+            height: 40px;
+        }
+
+        /* Dark Mode Toggle - Enhancement */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        body.dark-mode .dark-mode-toggle {
+            background-color: var(--accent-color);
+            color: black;
+        }
+
+        /* New Enhancement: Reading Progress Bar */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: transparent;
+            z-index: 1010;
+        }
+        
+        .progress-bar {
+            height: 4px;
+            background: var(--accent-color);
+            width: 0%;
+        }
+
+        /* New Enhancement: Floating "Back to Top" Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        /* Newsletter Signup - Enhancement */
+        .newsletter-signup {
+            background-color: #f2f2f2;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        body.dark-mode .newsletter-signup {
+            background-color: #222;
+        }
+
+        .newsletter-signup h3 {
+            margin-bottom: 15px;
+        }
+
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .newsletter-form input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+        }
+
+        body.dark-mode .newsletter-form input {
+            background-color: #333;
+            color: white;
+            border-color: #555;
+        }
+
+        .newsletter-form button {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            font-weight: bold;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- Progress Bar Enhancement -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="#" class="logo">
+                <img src="/api/placeholder/120/30" alt="The Athletic">
+            </a>
+            <nav class="nav-main">
+                <ul class="nav-list">
+                    <li><a href="#">Premier League</a></li>
+                    <li><a href="#">Champions League</a></li>
+                    <li><a href="#">International</a></li>
+                    <li><a href="#">Women's Football</a></li>
+                    <li><a href="#">Fantasy</a></li>
+                    <li><a href="#">Podcasts</a></li>
+                    <li><a href="#">Culture</a></li>
+                    <li><a href="#">About Sports</a></li>
+                </ul>
+                <div class="nav-right">
+                    <a href="#" class="search-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </a>
+                    <div class="user-actions">
+                        <a href="#">Log In</a>
+                        <a href="#" class="subscribe-btn">Subscribe</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <main class="main-content">
+            <article class="main-article">
+                <img src="/api/placeholder/800/450" alt="Premier League Footballer" class="main-image">
+                <h1 class="main-title">The Premier League's Underrated: 30 One-season picks from around the globe</h1>
+                <p class="main-excerpt">These are some of the players whose four-year Premier League Phase period was underrated for their work in one season.</p>
+                <div class="article-meta">
+                    <img src="/api/placeholder/24/24" alt="Author" class="author-avatar">
+                    <span>By James McNicholas • 4h ago</span>
+                </div>
+            </article>
+
+            <!-- Spotlight Section -->
+            <section class="spotlight article-section">
+                <h2 class="section-title">Spotlight</h2>
+                <div class="spotlight-grid">
+                    <div class="spotlight-card">
+                        <img src="/api/placeholder/400/250" alt="Manchester United">
+                        <h3>Manchester United find a pattern of transformation</h3>
+                        <p class="excerpt">A report suggests that after a turbulent period amid disappointment it's starting to take shape under Ten Hag's guidance.</p>
+                        <div class="article-meta">
+                            <span>By Carl Anka • 3h ago</span>
+                        </div>
+                    </div>
+                    <div class="spotlight-card">
+                        <img src="/api/placeholder/400/250" alt="Football, feelings and friendships">
+                        <h3>Football, feelings and friendships - amid a day to savour for Arsenal fans in Madrid</h3>
+                        <p class="excerpt">How Arsenal's Champions League victory against Real Madrid meant more than just three points.</p>
+                        <div class="article-meta">
+                            <span>By James McNicholas • 2h ago</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Two column layout -->
+            <div class="two-col-layout">
+                <div class="main-column">
+                    <!-- Around Premier League -->
+                    <section class="premier-league-section article-section">
+                        <h2 class="section-title">Around the Premier League</h2>
+                        <div class="article-grid">
+                            <article class="article-card">
+                                <img src="/api/placeholder/300/200" alt="Premier League">
+                                <h3>Ratcliffe checks on the status of Ineos, rattled Rice and Neves's tactical progress smiles</h3>
+                                <div class="article-meta">
+                                    <span>By The Athletic Staff • 6h ago</span>
+                                </div>
+                            </article>
+                            <article class="article-card">
+                                <img src="/api/placeholder/300/200" alt="Newcastle">
+                                <h3>Hojbjerg is central man to the Premier League. How will he work for Jose Espirito Santo?</h3>
+                                <div class="article-meta">
+                                    <span>By Charlie Eccleshare • 5h ago</span>
+                                </div>
+                            </article>
+                            <article class="article-card">
+                                <img src="/api/placeholder/300/200" alt="Real Madrid">
+                                <h3>Are these just a period of adversity - but where does Will they go now?</h3>
+                                <div class="article-meta">
+                                    <span>By Daniel Taylor • 3h ago</span>
+                                </div>
+                            </article>
+                        </div>
+                    </section>
+
+                    <!-- Open Mic -->
+                    <section class="article-section">
+                        <h2 class="section-title">Open Mic</h2>
+                        <article class="article-card">
+                            <img src="/api/placeholder/500/300" alt="Liverpool">
+                            <h3>Explain! Why Liverpool could find their risky buys being discarded</h3>
+                            <p class="excerpt">This article takes a panoramic look at some of the problems causing a rift in squad harmony at Anfield.</p>
+                            <div class="article-meta">
+                                <span>By James Pearce • 7h ago</span>
+                            </div>
+                        </article>
+                    </section>
+
+                    <!-- Transfer Targets -->
+                    <section class="transfer-targets article-section">
+                        <h2 class="section-title">Transfer Targets</h2>
+                        <article class="article-card">
+                            <img src="/api/placeholder/500/300" alt="Transfer Target">
+                            <h3>Premier League top-five odds: Only Newcastle wins, Everton fall</h3>
+                            <p class="excerpt">Latest odds show an interesting turn around where staying in league Premier League might be a bigger achievement.</p>
+                            <div class="article-meta">
+                                <span>By Oliver Kay • 5h ago</span>
+                            </div>
+                        </article>
+                    </section>
+                </div>
+
+                <div class="sidebar">
+                    <!-- Featured Articles -->
+                    <section class="article-section">
+                        <h2 class="section-title">Editor's Picks</h2>
+                        <article class="article-card">
+                            <img src="/api/placeholder/250/150" alt="Bayern vs Real">
+                            <h3>Bayern vs Real: What's like to be left out in double quick?</h3>
+                            <div class="article-meta">
+                                <span>By Michael Cox • 4h ago</span>
+                            </div>
+                        </article>
+                        <article class="article-card">
+                            <img src="/api/placeholder/250/150" alt="Guardiola">
+                            <h3>Man City considering contract after Guardiola's options extended</h3>
+                            <div class="article-meta">
+                                <span>By Sam Lee • 6h ago</span>
+                            </div>
+                        </article>
+                        <article class="article-card">
+                            <img src="/api/placeholder/250/150" alt="Arsenal">
+                            <h3>Arsenal's credibility demanding of Real Madrid second to last Champions step</h3>
+                            <div class="article-meta">
+                                <span>By Art de Roché • 3h ago</span>
+                            </div>
+                        </article>
+                        <article class="article-card">
+                            <img src="/api/placeholder/250/150" alt="Champions League">
+                            <h3>The Champions League could feel free to end - how it may benefit English clubs</h3>
+                            <div class="article-meta">
+                                <span>By Adam Crafton • 7h ago</span>
+                            </div>
+                        </article>
+                    </section>
+
+                    <!-- Newsletter Signup - Enhancement -->
+                    <section class="newsletter-signup">
+                        <h3>Never Miss a Story</h3>
+                        <p>Get premium football analysis straight to your inbox</p>
+                        <form class="newsletter-form">
+                            <input type="email" placeholder="Your email address">
+                            <button type="submit">Subscribe</button>
+                        </form>
+                    </section>
+                </div>
+            </div>
+
+            <!-- Most Popular -->
+            <section class="most-popular article-section">
+                <h2 class="section-title">Most Popular</h2>
+                <ol class="popular-list">
+                    <li>
+                        <span class="number">1</span>
+                        <div>
+                            <h3>Manchester United find a pattern of transformation</h3>
+                            <div class="article-meta">
+                                <span>By Carl Anka • 3h ago</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="number">2</span>
+                        <div>
+                            <h3>Why is Nigel Dion so difficult to debate against?</h3>
+                            <div class="article-meta">
+                                <span>By Michael Walker • 5h ago</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="number">3</span>
+                        <div>
+                            <h3>Man City considering contract after Guardiola's options extended</h3>
+                            <div class="article-meta">
+                                <span>By Sam Lee • 6h ago</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="number">4</span>
+                        <div>
+                            <h3>Premier League top-five odds: Only Newcastle wins, Everton fall</h3>
+                            <div class="article-meta">
+                                <span>By Oliver Kay • 5h ago</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="number">5</span>
+                        <div>
+                            <h3>Arsenal's credibility demanding of Real Madrid second to last Champions step</h3>
+                            <div class="article-meta">
+                                <span>By Art de Roché • 3h ago</span>
+                            </div>
+                        </div>
+                    </li>
+                </ol>
+            </section>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h3>Premier League</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Arsenal</a></li>
+                        <li><a href="#">Aston Villa</a></li>
+                        <li><a href="#">Bournemouth</a></li>
+                        <li><a href="#">Brentford</a></li>
+                        <li><a href="#">Brighton</a></li>
+                        <li><a href="#">Chelsea</a></li>
+                        <li><a href="#">Crystal Palace</a></li>
+                        <li><a href="#">Everton</a></li>
+                        <li><a href="#">Fulham</a></li>
+                        <li><a href="#">Liverpool</a></li>
+                        <li><a href="#">Manchester City</a></li>
+                        <li><a href="#">Manchester United</a></li>
+                        <li><a href="#">Newcastle</a></li>
+                        <li><a href="#">Nottingham Forest</a></li>
+                        <li><a href="#">Tottenham</a></li>
+                        <li><a href="#">West Ham</a></li>
+                        <li><a href="#">Wolves</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>International Football</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">UEFA Champions League</a></li>
+                        <li><a href="#">UEFA Europa League</a></li>
+                        <li><a href="#">La Liga</a></li>
+                        <li><a href="#">Serie A</a></li>
+                        <li><a href="#">Bundesliga</a></li>
+                        <li><a href="#">Ligue 1</a></li>
+                        <li><a href="#">MLS</a></li>
+                        <li><a href="#">World Cup</a></li>
+                        <li><a href="#">European Championship</a></li>
+                        <li><a href="#">Copa America</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Champions League</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Manchester City</a></li>
+                        <li><a href="#">Real Madrid</a></li>
+                        <li><a href="#">Bayern Munich</a></li>
+                        <li><a href="#">Barcelona</a></li>
+                        <li><a href="#">Liverpool</a></li>
+                        <li><a href="#">Arsenal</a></li>
+                        <li><a href="#">Paris Saint-Germain</a></li>
+                        <li><a href="#">Borussia Dortmund</a></li>
+                        <li><a href="#">Inter Milan</a></li>
+                        <li><a href="#">Atletico Madrid</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Most Popular</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Manchester United find a pattern of transformation</a></li>
+                        <li><a href="#">Premier League top-five odds: Only Newcastle wins, Everton fall</a></li>
+                        <li><a href="#">Why is Nigel Dion so difficult to debate against?</a></li>
+                        <li><a href="#">Arsenal's credibility demanding of Real Madrid second to last Champions step</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="app-download">
+                <a href="#"><img src="/api/placeholder/120/40" alt="Download on App Store"></a>
+                <a href="#"><img src="/api/placeholder/120/40" alt="Get it on Google Play"></a>
+            </div>
+            <div class="copyright">
+                <p>© 2025 The Athletic Media Company. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button - Enhancement -->
+    <button class="back-to-top" id="backToTopBtn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 15l-6-6-6 6"></path>
+        </svg>
+    </button>
+
+    <!-- Dark Mode Toggle - Enhancement -->
+    <button class="dark-mode-toggle" id="darkModeToggle">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+    </button>
+
+    <script>
+        // Dark Mode Toggle Functionality
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+        
+        // Check for saved preference
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            body.classList.add('dark-mode');
+        }
+        
+        darkModeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            
+            // Save preference
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                localStorage.setItem('darkMode', null);
+            }
+        });
+
+        // Reading Progress Bar Enhancement
+        window.onscroll = function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("progressBar").style.width = scrolled + "%";
+            
+            // Back to Top Button
+            const backToTopBtn = document.getElementById("backToTopBtn");
+            if (winScroll > 300) {
+                backToTopBtn.style.display = "flex";
+            } else {
+                backToTopBtn.style.display = "none";
+            }
+        };
+
+        // Back to Top Functionality
+        document.getElementById("backToTopBtn").addEventListener("click", function() {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        });
+
+        // Enhancement: Article Hover Effects
+        const articleCards = document.querySelectorAll('.article-card');
+        articleCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-5px)';
+                card.style.transition = 'transform 0.3s ease';
+                card.style.boxShadow = '0 5px 15px rgba(0,0,0,0.1)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+                card.style.boxShadow = 'none';
+            });
+        });
+
+        // Enhancement: Newsletter Form Validation
+        const newsletterForm = document.querySelector('.newsletter-form');
+        if (newsletterForm) {
+            newsletterForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const emailInput = this.querySelector('input[type="email"]');
+                const email = emailInput.value.trim();
+                
+                if (!email) {
+                    alert('Please enter your email address');
+                    return;
+                }
+                
+                // Simple email validation
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    alert('Please enter a valid email address');
+                    return;
+                }
+                
+                // Simulate successful subscription
+                emailInput.value = '';
+                
+                // Create and show success message
+                const successMsg = document.createElement('div');
+                successMsg.textContent = 'Thank you for subscribing!';
+                successMsg.style.color = '#4CAF50';
+                successMsg.style.marginTop = '10px';
+                successMsg.style.fontWeight = 'bold';
+                
+                const existingMsg = newsletterForm.parentNode.querySelector('div[style*="color: #4CAF50"]');
+                if (existingMsg) {
+                    existingMsg.remove();
+                }
+                
+                newsletterForm.parentNode.appendChild(successMsg);
+                
+                // Remove success message after 3 seconds
+                setTimeout(() => {
+                    successMsg.remove();
+                }, 3000);
+            });
+        }
+
+        // Enhancement: Sticky Header Shadow on Scroll
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 10) {
+                header.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+            } else {
+                header.style.boxShadow = 'none';
+            }
+        });
+
+        // Enhancement: Dynamic "Time ago" for articles
+        function updateTimeAgo() {
+            const timeElements = document.querySelectorAll('.article-meta span');
+            
+            timeElements.forEach(el => {
+                const text = el.textContent;
+                if (text.includes('ago')) {
+                    // Extract the time value
+                    const match = text.match(/(\d+)h ago/);
+                    if (match) {
+                        const hours = parseInt(match[1]);
+                        // Randomly update some times to make it seem dynamic
+                        if (Math.random() > 0.7) {
+                            let newHours = hours + 1;
+                            if (newHours > 23) {
+                                el.textContent = text.replace(`${hours}h ago`, `1d ago`);
+                            } else {
+                                el.textContent = text.replace(`${hours}h ago`, `${newHours}h ago`);
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Update times occasionally
+        setInterval(updateTimeAgo, 60000); // Every minute
+
+        // Enhancement: Article View Count Simulation
+        function simulateViewCounts() {
+            // Create view count elements if they don't exist
+            const articles = document.querySelectorAll('.article-card');
+            
+            articles.forEach((article, index) => {
+                let viewCountEl = article.querySelector('.view-count');
+                
+                if (!viewCountEl) {
+                    viewCountEl = document.createElement('div');
+                    viewCountEl.className = 'view-count';
+                    viewCountEl.style.fontSize = '12px';
+                    viewCountEl.style.color = '#888';
+                    viewCountEl.style.marginTop = '5px';
+                    
+                    // Generate random initial view count between 50 and 5000
+                    const viewCount = Math.floor(Math.random() * 4950) + 50;
+                    viewCountEl.textContent = `${viewCount} views`;
+                    viewCountEl.dataset.count = viewCount;
+                    
+                    // Add after article meta
+                    const meta = article.querySelector('.article-meta');
+                    if (meta) {
+                        meta.parentNode.insertBefore(viewCountEl, meta.nextSibling);
+                    }
+                } else {
+                    // Occasionally increase view count
+                    if (Math.random() > 0.6) {
+                        let count = parseInt(viewCountEl.dataset.count);
+                        const increase = Math.floor(Math.random() * 10) + 1;
+                        count += increase;
+                        viewCountEl.textContent = `${count} views`;
+                        viewCountEl.dataset.count = count;
+                    }
+                }
+            });
+        }
+
+        // Simulate view counts initially and periodically update
+        simulateViewCounts();
+        setInterval(simulateViewCounts, 30000); // Every 30 seconds
+    </script>
+</body>
+</html>
